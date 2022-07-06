@@ -1,5 +1,4 @@
 import { prisma } from "../database";
-import { User } from "../interfaces/user";
 
 export async function createNewUser(
   email: string,

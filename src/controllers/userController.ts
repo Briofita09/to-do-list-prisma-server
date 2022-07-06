@@ -37,12 +37,3 @@ export async function loginUser(req: Request, res: Response) {
     console.log(err);
   }
 }
-
-export async function updateUser(req: Request, res: Response) {
-  try {
-    const { user } = res.locals;
-    res.send(user);
-  } catch (err) {
-    console.log(err);
-  }
-}

@@ -29,5 +29,3 @@ export async function loginUser(user: User) {
   if (!bcrypt.compareSync(user.password, userExist.password)) return null;
   return userExist.token;
 }
-
-export async function updateUser(user: User) {}

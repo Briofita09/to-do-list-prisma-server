@@ -1,6 +1,5 @@
 import { Router } from "express";
 import * as userController from "../controllers/userController";
-import { authMiddleware } from "../middlewares/authMiddleware";
 import { validateSchemaMiddleware } from "../middlewares/validateSchemaMiddleware";
 import { LoginSchema } from "../schemas/LoginSchema";
 import { UserSchema } from "../schemas/userSchema";
@@ -17,6 +16,5 @@ userRouter.post(
   validateSchemaMiddleware(LoginSchema),
   userController.loginUser
 );
-userRouter.get("/update-user", authMiddleware, userController.updateUser);
 
 export { userRouter };
