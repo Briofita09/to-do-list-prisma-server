@@ -109,7 +109,7 @@ export async function deleteCard(req: Request, res: Response) {
 
     const deletedCard = await cardService.deleteCard(user[0].id, parseInt(id));
 
-    if (deletedCard)
+    if (!deletedCard)
       return res.status(404).json({ message: "Card não encontdado" });
 
     return res.status(204).json({ message: "Card deletado com sucesso" });

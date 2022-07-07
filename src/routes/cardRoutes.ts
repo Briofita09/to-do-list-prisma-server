@@ -17,6 +17,10 @@ cardRouter.get("/get-all", authMiddleware, cardController.getAllCards);
 cardRouter.get("/get-one/:id", authMiddleware, cardController.getOneCard);
 cardRouter.post("/check/:id", authMiddleware, cardController.checkCard);
 cardRouter.post("/uncheck/:id", authMiddleware, cardController.uncheckCard);
-cardRouter.post("/edit-card/:id", authMiddleware, cardController.editCard);
-cardRouter.delete("delete-card/:id", authMiddleware, cardController.deleteCard);
+cardRouter.put("/edit-card/:id", authMiddleware, cardController.editCard);
+cardRouter.delete(
+  "/delete-card/:id",
+  authMiddleware,
+  cardController.deleteCard
+);
 export { cardRouter };
