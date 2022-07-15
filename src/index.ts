@@ -11,6 +11,4 @@ const app = express();
 
 app.use(cors()).use(express.json()).use(userRouter).use(cardRouter);
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server up and running at port ${process.env.PORT}`)
-);
+export { app };

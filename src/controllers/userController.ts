@@ -15,7 +15,7 @@ export async function createUser(req: Request, res: Response) {
         .json({ message: "Já existe um usuário cadastrado com esse email" });
 
     return res
-      .status(202)
+      .status(201)
       .json({ message: "Usuário cadastrado com sucesso", userExist });
   } catch (err) {
     console.log(err);
@@ -31,7 +31,7 @@ export async function loginUser(req: Request, res: Response) {
     if (!confirmedUser)
       return res
         .status(401)
-        .json({ message: "Login e/ou senha não são compativeis" });
+        .json({ message: "Email e/ou senha não são compativeis" });
 
     return res.status(200).json({ token: confirmedUser });
   } catch (err) {

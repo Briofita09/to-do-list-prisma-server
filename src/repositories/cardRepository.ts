@@ -1,4 +1,3 @@
-import { text } from "stream/consumers";
 import { prisma } from "../database";
 import { Card } from "../interfaces/card";
 
