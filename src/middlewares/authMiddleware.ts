@@ -17,6 +17,7 @@ export async function authMiddleware(
     res.locals.user = user;
   } catch (err) {
     console.log(err);
+    return res.status(500).send(err);
   }
   next();
 }

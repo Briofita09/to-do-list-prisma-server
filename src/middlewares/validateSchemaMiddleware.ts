@@ -8,7 +8,6 @@ export function validateSchemaMiddleware(schema: ObjectSchema) {
     const { error } = schema.validate(req.body);
     if (error) {
       const message = error.details[0].message;
-      console.log(error.details[0]);
       throw new Errors(message, 400);
     }
     next();

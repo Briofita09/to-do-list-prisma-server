@@ -42,6 +42,10 @@ export async function loginUser(req: Request, res: Response) {
 export async function getUser(_req: Request, res: Response) {
   try {
     const { user } = res.locals;
+    if (!user.length)
+      return res
+        .status(401)
+        .json({ message: "Você deveria estar logado para continuar" });
     const foundUser = await userRepository.findUserByEmail(user[0].email);
     if (!foundUser)
       return res.status(404).json({ message: "Usuário não encontrado" });
@@ -56,6 +60,11 @@ export async function editUser(req: Request, res: Response) {
   try {
     const { user } = res.locals;
     const editUser: User = req.body;
+
+    if (!user.length)
+      return res
+        .status(401)
+        .json({ message: "Você deveria estar logado para continuar" });
 
     const editedUser = await userService.editUser(user[0].id, editUser);
 

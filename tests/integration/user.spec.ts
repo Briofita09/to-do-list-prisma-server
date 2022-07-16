@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { prisma } from "../../src/database";
 
 import { app } from "../../src/index";
-import { generateUserBody } from "../factories/user";
+import { generateUserBody, userLogin } from "../factories/user";
 beforeEach(async () => {
   await prisma.$executeRaw`TRUNCATE TABLE Users RESTART IDENTITY CASCADE`;
 });
@@ -80,5 +80,70 @@ describe("POST /login", () => {
     const user = {};
     const response = await supertest(app).post("/login").send(user);
     expect(response.status).toBe(400);
+  });
+});
+
+describe("GET /get-user", () => {
+  it("should return 200 and an object referring a user when passed a valid token", async () => {
+    const userToken = await userLogin();
+    console.log(userToken);
+    const userResponse = await supertest(app)
+      .get("/get-user")
+      .set("Authorization", "bearer" + userToken);
+    expect(userResponse.status).toBe(200);
+    expect(userResponse.body).toBeInstanceOf(Object);
+  });
+
+  it('should return 401 and the error: "Você deveria estar logado para continuar"', async () => {
+    await userLogin();
+    const token = " 111";
+    const response = await supertest(app)
+      .get("/get-user")
+      .set("Authorization", "bearer" + token);
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body.message).toEqual(
+      "Você deveria estar logado para continuar"
+    );
+  });
+});
+
+describe("PUT /edit-user", () => {
+  it("should return 201 and a object with the edited user", async () => {
+    const token = await userLogin();
+    const newUser = {
+      name: "Briofitinha",
+      email: "briofita@briofita.com.br",
+      password: "123",
+      question: "123",
+      answer: "123",
+    };
+    const response = await supertest(app)
+      .put("/edit-user")
+      .send(newUser)
+      .set("Authorization", "bearer" + token);
+    expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(Object);
+  });
+
+  it('should return 401 and a error message: "Você deveria estar logado para continuar"', async () => {
+    await userLogin();
+    const token = " 111";
+    const newUser = {
+      name: "Briofitinha",
+      email: "briofita@briofita.com.br",
+      password: "123",
+      question: "123",
+      answer: "123",
+    };
+    const response = await supertest(app)
+      .put("/edit-user")
+      .send(newUser)
+      .set("Authorization", "bearer" + token);
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body.message).toEqual(
+      "Você deveria estar logado para continuar"
+    );
   });
 });
